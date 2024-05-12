@@ -12,7 +12,6 @@ use chrono::prelude::*;
 #[derive(Debug)]
 enum UUIDError {
     IoError(std::io::Error),
-    InvalidInput(String),
 }
 
 impl From<std::io::Error> for UUIDError {
@@ -25,7 +24,6 @@ impl Display for UUIDError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             UUIDError::IoError(err) => write!(f, "IO Error: {}", err),
-            UUIDError::InvalidInput(err) => write!(f, "Invalid Input: {}", err),
         }
     }
 }
@@ -34,13 +32,13 @@ fn main() -> Result<(), UUIDError> {
     let matches = command!("uuidecho")
         .arg(
             arg!(
-                --file <FILE>
+                -f --file <FILE>
             ).required(false)
                 .value_parser(value_parser!(PathBuf))
         ).
         arg(
             arg!(
-                --input <VALUE>
+                -i --input <VALUE>
             ).required(false)
         )
         .get_matches();
